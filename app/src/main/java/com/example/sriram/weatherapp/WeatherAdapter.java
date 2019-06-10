@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -28,10 +29,25 @@ public class WeatherAdapter extends ArrayAdapter<Weather> {
         TextView cityView = (TextView) listItemView.findViewById(R.id.City);
         cityView.setText(currentWeather.getCity());
         TextView tempView = (TextView) listItemView.findViewById(R.id.Temp);
-        tempView.setText(currentWeather.getTemp());
+        tempView.setText(currentWeather.getTemp()+"°C");
         GradientDrawable tempCircle = (GradientDrawable) tempView.getBackground();
         int tempColor = getMagnitudeColor(currentWeather.getTemp());
         tempCircle.setColor(tempColor);
+        TextView country = (TextView) listItemView.findViewById(R.id.country);
+        country.setText(currentWeather.getCountry());
+        ImageView con = (ImageView) listItemView.findViewById(R.id.flag);
+        if(country.getText().toString().equals("IN")){
+            con.setImageResource(R.drawable.indiaflagicon64);
+        }
+        if(country.getText().toString().equals("GB")){
+            con.setImageResource(R.drawable.uk);
+        }
+        TextView weather = (TextView) listItemView.findViewById(R.id.weather);
+        weather.setText(currentWeather.getWeather());
+        ImageView climate = (ImageView) listItemView.findViewById(R.id.sym);
+        climate.setImageResource(getClimate(weather.getText().toString()));
+        TextView windView = (TextView) listItemView.findViewById(R.id.wind);
+        windView.setText(currentWeather.getWind());
         return listItemView;
     }
     int getMagnitudeColor(String magnitude){
@@ -47,7 +63,22 @@ public class WeatherAdapter extends ArrayAdapter<Weather> {
             magnitudeColorResourceId = R.color.colorHot;
         if(magnitudeFloor>=35)
             magnitudeColorResourceId = R.color.ColorVHot;
-//        magnitudeColorResourceId = R.color.ColorVHot;
         return ContextCompat.getColor(getContext(), magnitudeColorResourceId);
+    }
+    int getClimate(String w){
+        int ResId = 0;
+        if(w.equals("Haze"))
+            ResId = R.drawable.haze;
+        if(w.equals("Clouds"))
+            ResId = R.drawable.cloud;
+        if(w.equals("Clear"))
+            ResId = R.drawable.clear;
+        if(w.equals("Rain"))
+            ResId = R.drawable.rainy;
+        if(w.equals("Thunderstorm"))
+            ResId = R.drawable.storm;
+        if(w.equals("smoke"))
+            ResId = R.drawable.smoke;
+        return ResId;
     }
 }
