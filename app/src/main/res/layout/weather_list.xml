@@ -2,23 +2,23 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/trans">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         xmlns:tools="http://schemas.android.com/tools">
 
         <TextView
             android:id="@+id/City"
-            android:padding="10dp"
             android:layout_margin="10dp"
             android:layout_width="0dp"
+            android:textColor="@color/dark"
             android:layout_height="wrap_content"
             android:textSize="25sp"
             android:layout_weight="1"/>
         <TextView
             android:id="@+id/Temp"
-            android:padding="10dp"
             android:layout_margin="10dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -32,8 +32,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="5dp">
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -50,6 +51,7 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
@@ -62,6 +64,7 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
             <ImageView
@@ -73,6 +76,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:src="@drawable/sunrise"/>
+            <TextView
+                android:id="@+id/sunrise"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:src="@drawable/sunset"/>
+            <TextView
+                android:id="@+id/sunset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+
         <TextView
             android:id="@+id/humidity"
             android:layout_width="match_parent"

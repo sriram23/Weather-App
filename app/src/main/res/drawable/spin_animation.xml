@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list android:id="@+id/selected"
+    android:oneshot="false"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/sunset" android:duration="1000" />
+    <item android:drawable="@drawable/haze" android:duration="1000" />
+    <item android:drawable="@drawable/sunrise" android:duration="1000" />
+    <item android:drawable="@drawable/clear" android:duration="1000" />
+    <item android:drawable="@drawable/cloud" android:duration="1000" />
+    <item android:drawable="@drawable/rainy" android:duration="1000" />
+    <item android:drawable="@drawable/drizzle" android:duration="1000"/>
+    <item android:drawable="@drawable/misty" android:duration="1000"/>
+    <item android:drawable="@drawable/smoke" android:duration="1000"/>
+    <item android:drawable="@drawable/snow" android:duration="1000"/>
+</animation-list>

@@ -7,4 +7,14 @@
         android:title="REFRESH"
         app:showAsAction="ifRoom"></item>
 
+    <item
+        android:id="@+id/TamilNadu"
+        android:title="Tamilnadu"></item>
+    <item
+        android:id="@+id/World"
+        android:title="World"></item>
+    <item
+        android:id="@+id/India"
+        android:title="India"></item>
+
 </menu>

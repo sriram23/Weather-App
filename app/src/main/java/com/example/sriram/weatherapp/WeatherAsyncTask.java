@@ -16,10 +16,13 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import static com.example.sriram.weatherapp.R.color.colorCool;
 
@@ -67,8 +70,36 @@ public class WeatherAsyncTask extends AsyncTask<String, Integer, List<Weather>> 
             int temp = main.getInt("temp");
             String city = base.getString("name");
             String country = sys.getString("country");
+            long sunrise = sys.getInt("sunrise");
+            long sunset = sys.getInt("sunset");
+            String sunriseStr = String.valueOf(sunrise);
+            String sunsetStr = String.valueOf(sunset);
+
+            long timezone = base.getInt("timezone");
+//            long timezone = -14400;
+            Date dObjzone = new Date(timezone);
+            SimpleDateFormat timeFormatZone = new SimpleDateFormat("z");
+            String timezone_fin = timeFormatZone.format(dObjzone);
+
+            long timeinMSSR = Long.parseLong(sunriseStr);
+//            timeinMSSR = timeinMSSR - 19800 + timezone; // This app works in IST and India is 19800 seconds ahead of GMT. Hence Subtracting it from Linux timestamp.
+            timeinMSSR = (timeinMSSR*1000);
+            Date dObjSR = new Date(timeinMSSR);
+            SimpleDateFormat timeFormatSR = new SimpleDateFormat("HH:MM a z");
+            timeFormatSR.setTimeZone(TimeZone.getTimeZone(city));
+            String timeSunrise = timeFormatSR.format(dObjSR);//+" "+timezone_fin;
+
+            long timeinMSSS = Long.parseLong(sunsetStr);
+            timeinMSSS = timeinMSSS*1000;
+            Date dObjSS = new Date(timeinMSSS);
+//            SimpleDateFormat dateFormatSS = new SimpleDateFormat("DD-MMM-YYYY");
+            SimpleDateFormat timeFormatSS = new SimpleDateFormat("HH:MM a z");
+            timeFormatSS.setTimeZone(TimeZone.getTimeZone(String.valueOf(timezone)));
+            String timeSunset = timeFormatSS.format(dObjSS);
+//            String dateSunset = dateFormatSS.format(dObjSS);
+
             finalTemp = String.valueOf(temp);
-            Weather weather = new Weather(city, finalTemp, country,weatherTxt,windSpeed);
+            Weather weather = new Weather(city, finalTemp, country,weatherTxt,windSpeed,timeSunrise,timeSunset);
             W.add(weather);
 
         } catch (JSONException e) {

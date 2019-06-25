@@ -5,29 +5,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
-    <ProgressBar
-        android:id="@+id/progress"
+    tools:context=".MainActivity"
+    android:background="@drawable/background">
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="@style/ProgressStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+
     <TextView
         android:id="@+id/percent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
+
     <TextView
         android:visibility="invisible"
         android:id="@+id/updateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-<ListView
+    <ListView
     android:id="@+id/list"
     android:paddingBottom="10dp"
     android:paddingTop="10dp"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android" />
 
 </LinearLayout>

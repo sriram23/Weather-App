@@ -42,12 +42,24 @@ public class WeatherAdapter extends ArrayAdapter<Weather> {
         if(country.getText().toString().equals("GB")){
             con.setImageResource(R.drawable.uk);
         }
+        if(country.getText().toString().equals("US")){
+            con.setImageResource(R.drawable.usa);
+        }
+
         TextView weather = (TextView) listItemView.findViewById(R.id.weather);
         weather.setText(currentWeather.getWeather());
         ImageView climate = (ImageView) listItemView.findViewById(R.id.sym);
         climate.setImageResource(getClimate(weather.getText().toString()));
         TextView windView = (TextView) listItemView.findViewById(R.id.wind);
+        TextView sunriseView = (TextView) listItemView.findViewById(R.id.sunrise);
+        sunriseView.setText(currentWeather.getSunrise());
+        TextView sunsetView = (TextView) listItemView.findViewById(R.id.sunset);
+        sunsetView.setText(currentWeather.getSunset());
         windView.setText(currentWeather.getWind());
+
+//        TextView timezoneView = (TextView) listItemView.findViewById(R.id.TZ);
+//        timezoneView.setText(currentWeather.getTZ());
+
         return listItemView;
     }
     int getMagnitudeColor(String magnitude){
@@ -77,8 +89,12 @@ public class WeatherAdapter extends ArrayAdapter<Weather> {
             ResId = R.drawable.rainy;
         if(w.equals("Thunderstorm"))
             ResId = R.drawable.storm;
-        if(w.equals("smoke"))
-            ResId = R.drawable.smoke;
+        if(w.equals("Smoke"))
+            ResId = R.drawable.misty;
+        if(w.equals("Drizzle"))
+            ResId = R.drawable.drizzle;
+        if(w.equals("Mist"))
+            ResId = R.drawable.snow;
         return ResId;
     }
 }
