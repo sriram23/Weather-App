@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/refresh"
         android:icon="@android:drawable/ic_popup_sync"
         android:title="REFRESH"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="always"></item>
+
+    <item
+        android:id="@+id/search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="SEARCH"
+        app:showAsAction="always"></item>
 
     <item
         android:id="@+id/TamilNadu"

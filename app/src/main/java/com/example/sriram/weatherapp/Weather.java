@@ -28,5 +28,5 @@ public class Weather {
     public String getWind(){return mWind;}
     public String getSunrise(){return mSunrise;}
     public String getSunset(){return mSunset;}
-    public String getTZ(){return mTz;}
+//    public String getTZ(){return mTz;}
 }

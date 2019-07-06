@@ -41,7 +41,13 @@ public class WeatherAsyncTask extends AsyncTask<String, Integer, List<Weather>> 
                 url = new URL(strings[i]);
                 jsonResp = makeconnection(url);
 //                finalJSR[i] = JsonParse(jsonResp);
-                weather=JsonParse(jsonResp);
+                Boolean check = CheckConn(jsonResp);
+                if(check)
+                    weather=JsonParse(jsonResp);
+                else {
+//                    Weather weather = new Weather("City Not Found!", "-1", "NA", "Clear", "1234", "1234", "1234");
+                    weather = null;
+                }
             }
 
         } catch (MalformedURLException e) {
@@ -50,57 +56,80 @@ public class WeatherAsyncTask extends AsyncTask<String, Integer, List<Weather>> 
         return weather;
     }
 
+    private Boolean CheckConn(String url) {
+        JSONObject base = null;
+        String cod = null;
+        try {
+            base = new JSONObject(url);
+            cod = base.getString("cod");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (cod.equals("404"))
+            return false;
+        return true;
+    }
+
     private List<Weather> JsonParse(String jsonResp) {
         String finalTemp = null;
         JSONObject base = null;
 
         try {
             base = new JSONObject(jsonResp);
-            JSONObject main = base.getJSONObject("main");
-            JSONObject sys = base.getJSONObject("sys");
-            JSONArray weatherarray = base.getJSONArray("weather");
-            JSONObject weatherObj = weatherarray.getJSONObject(0);
-            String weatherTxt = weatherObj.getString("main");
-            JSONObject wind = base.getJSONObject("wind");
-            float speed = (float) wind.getDouble("speed");
-            speed = (float) (speed * (3600/1609.344));
-            float deg = (float) wind.getDouble("deg");
-            String windSpeed = String.valueOf(speed)+" mph - "+getDirection(deg);
+            String cod = base.getString("cod");
 
-            int temp = main.getInt("temp");
-            String city = base.getString("name");
-            String country = sys.getString("country");
-            long sunrise = sys.getInt("sunrise");
-            long sunset = sys.getInt("sunset");
-            String sunriseStr = String.valueOf(sunrise);
-            String sunsetStr = String.valueOf(sunset);
 
-            long timezone = base.getInt("timezone");
+            if(cod.equals("200")){
+                JSONObject main = base.getJSONObject("main");
+                JSONObject sys = base.getJSONObject("sys");
+                JSONArray weatherarray = base.getJSONArray("weather");
+                JSONObject weatherObj = weatherarray.getJSONObject(0);
+                String weatherTxt = weatherObj.getString("main");
+                JSONObject wind = base.getJSONObject("wind");
+                float speed = (float) wind.getDouble("speed");
+                speed = (float) (speed * (3600 / 1609.344));
+                float deg = (float) wind.getDouble("deg");
+                String windSpeed = String.valueOf(speed) + " mph - " + getDirection(deg);
+
+                int temp = main.getInt("temp");
+                String city = base.getString("name");
+                String country = sys.getString("country");
+                long sunrise = sys.getInt("sunrise");
+                long sunset = sys.getInt("sunset");
+                String sunriseStr = String.valueOf(sunrise);
+                String sunsetStr = String.valueOf(sunset);
+
+                long timezone = base.getInt("timezone");
 //            long timezone = -14400;
-            Date dObjzone = new Date(timezone);
-            SimpleDateFormat timeFormatZone = new SimpleDateFormat("z");
-            String timezone_fin = timeFormatZone.format(dObjzone);
+                Date dObjzone = new Date(timezone);
+                SimpleDateFormat timeFormatZone = new SimpleDateFormat("z");
+                String timezone_fin = timeFormatZone.format(dObjzone);
 
-            long timeinMSSR = Long.parseLong(sunriseStr);
+                long timeinMSSR = Long.parseLong(sunriseStr);
 //            timeinMSSR = timeinMSSR - 19800 + timezone; // This app works in IST and India is 19800 seconds ahead of GMT. Hence Subtracting it from Linux timestamp.
-            timeinMSSR = (timeinMSSR*1000);
-            Date dObjSR = new Date(timeinMSSR);
-            SimpleDateFormat timeFormatSR = new SimpleDateFormat("HH:MM a z");
-            timeFormatSR.setTimeZone(TimeZone.getTimeZone(city));
-            String timeSunrise = timeFormatSR.format(dObjSR);//+" "+timezone_fin;
+                timeinMSSR = (timeinMSSR * 1000);
+                Date dObjSR = new Date(timeinMSSR);
+                SimpleDateFormat timeFormatSR = new SimpleDateFormat("HH:MM a z");
+                timeFormatSR.setTimeZone(TimeZone.getTimeZone(city));
+                String timeSunrise = timeFormatSR.format(dObjSR);//+" "+timezone_fin;
 
-            long timeinMSSS = Long.parseLong(sunsetStr);
-            timeinMSSS = timeinMSSS*1000;
-            Date dObjSS = new Date(timeinMSSS);
+                long timeinMSSS = Long.parseLong(sunsetStr);
+                timeinMSSS = timeinMSSS * 1000;
+                Date dObjSS = new Date(timeinMSSS);
 //            SimpleDateFormat dateFormatSS = new SimpleDateFormat("DD-MMM-YYYY");
-            SimpleDateFormat timeFormatSS = new SimpleDateFormat("HH:MM a z");
-            timeFormatSS.setTimeZone(TimeZone.getTimeZone(String.valueOf(timezone)));
-            String timeSunset = timeFormatSS.format(dObjSS);
+                SimpleDateFormat timeFormatSS = new SimpleDateFormat("HH:MM a z");
+                timeFormatSS.setTimeZone(TimeZone.getTimeZone(String.valueOf(timezone)));
+                String timeSunset = timeFormatSS.format(dObjSS);
 //            String dateSunset = dateFormatSS.format(dObjSS);
 
-            finalTemp = String.valueOf(temp);
-            Weather weather = new Weather(city, finalTemp, country,weatherTxt,windSpeed,timeSunrise,timeSunset);
-            W.add(weather);
+                finalTemp = String.valueOf(temp);
+                Weather weather = new Weather(city, finalTemp, country, weatherTxt, windSpeed, timeSunrise, timeSunset);
+                W.add(weather);
+            }
+            else if(cod.equals("404")){
+                Weather weather = new Weather("City Not Found!", "-1", "NA", "Clear", "1234", "1234", "1234");
+                W.add(weather);
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -158,18 +187,20 @@ public class WeatherAsyncTask extends AsyncTask<String, Integer, List<Weather>> 
     protected void onPreExecute() {
 //        super.onPreExecute();
         MainActivity.progressBar.setProgress(0);
+//        MainActivity.progressBar.setVisibility(View.GONE);
 //        MainActivity.per.setText("0%");
-        MainActivity.time.setVisibility(View.INVISIBLE);
         MainActivity.progressBar.setVisibility(View.VISIBLE);
+        MainActivity.time.setVisibility(View.VISIBLE);
         MainActivity.per.setVisibility(View.VISIBLE);
-        MainActivity.weatherlistview.setVisibility(View.INVISIBLE);
+        MainActivity.weatherlistview.setVisibility(View.GONE);
     }
 
     @Override
     protected void onProgressUpdate(Integer... values) {
 //        super.onProgressUpdate(values);
         MainActivity.progressBar.setProgress(values[0]);
-        MainActivity.per.setText(values[0].toString()+"%");
+        MainActivity.per.setAnimation(MainActivity.fadeout);
+//        MainActivity.per.setText(values[0].toString()+"%");
     }
 
     @Override
@@ -187,6 +218,8 @@ public class WeatherAsyncTask extends AsyncTask<String, Integer, List<Weather>> 
             dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
             MainActivity.Time = dtf.format(now);
+            MainActivity.time.setTextSize(15);
+            MainActivity.time.setTextColor(000000);
             MainActivity.time.setText("Last updated on: "+MainActivity.Time);
             if(MainActivity.currWeather!=null && !MainActivity.currWeather.isEmpty())
                MainActivity.madapter.addAll(MainActivity.currWeather);
